@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tfs.lexcontrol_api.dtos.ClienteRequestDTO;
 import tfs.lexcontrol_api.models.Cliente;
-import tfs.lexcontrol_api.models.Endereço;
+import tfs.lexcontrol_api.models.Endereco;
 import tfs.lexcontrol_api.repositories.ClienteRepository;
 
 import java.math.BigDecimal;
@@ -25,38 +25,38 @@ public class ClienteController {
     public ResponseEntity<Cliente> create(@RequestBody @Valid ClienteRequestDTO dto) {
         var cliente = new Cliente();
 
-        // Mapeamento manual dos campos simples
+        // 1. Mapeamento de campos obrigatórios (Evita o erro de CPF null)
         cliente.setNomeCliente(dto.nomeCliente());
+        cliente.setCpf(dto.cpf());
+        cliente.setRg(dto.rg());
+        cliente.setDataDeVencimento(dto.dataDeVencimento());
+
+        // 2. Mapeamento de campos da causa e honorários
         cliente.setCausa(dto.causa());
         cliente.setStatusPagamento(dto.statusPagamento());
+        cliente.setModeloDePagamento(dto.modeloDePagamento());
 
-        // Conversão de double (DTO) para BigDecimal (Entity)
+        // Conversões seguras de tipos numéricos
         cliente.setValorCausa(BigDecimal.valueOf(dto.valorCausa()));
+        cliente.setValorParcela(BigDecimal.valueOf(dto.valorParcela()));
+        cliente.setTotalHonorarios(BigDecimal.valueOf(dto.totalHonorarios()));
 
-        // Mapeamento do Endereço
+        // 3. Mapeamento do Endereço (@Embedded)
         if (dto.endereco() != null) {
-            var enderecoModel = new Endereço();
-            enderecoModel.setLogradouro(dto.endereco().logradouro());
-            enderecoModel.setNumero(dto.endereco().numero());
-            enderecoModel.setBairro(dto.endereco().bairro());
-            enderecoModel.setCidade(dto.endereco().cidade());
-            enderecoModel.setEstado(dto.endereco().estado());
-            enderecoModel.setCep(dto.endereco().cep());
-            enderecoModel.setComplemento(dto.endereco().complemento());
-
+            var enderecoModel = new Endereco();
+            // Usando BeanUtils para simplificar o mapeamento do endereço
+            BeanUtils.copyProperties(dto.endereco(), enderecoModel);
             cliente.setEndereco(enderecoModel);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(cliente));
     }
 
-    // READ ALL
     @GetMapping
     public ResponseEntity<List<Cliente>> getAll() {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    // READ ONE
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getOne(@PathVariable Long id) {
         Cliente cliente = repository.findById(id)
@@ -64,19 +64,29 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody @Valid ClienteRequestDTO dto) {
         Cliente cliente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Impossível atualizar: Cliente não encontrado."));
 
-        BeanUtils.copyProperties(dto, cliente);
-        cliente.setId(id); // Garante que o ID não mude durante a cópia
+
+        cliente.setNomeCliente(dto.nomeCliente());
+        cliente.setCpf(dto.cpf());
+        cliente.setRg(dto.rg());
+        cliente.setDataDeVencimento(dto.dataDeVencimento());
+        cliente.setCausa(dto.causa());
+        cliente.setStatusPagamento(dto.statusPagamento());
+        cliente.setValorCausa(BigDecimal.valueOf(dto.valorCausa()));
+
+        if (dto.endereco() != null) {
+            var enderecoModel = new Endereco();
+            BeanUtils.copyProperties(dto.endereco(), enderecoModel);
+            cliente.setEndereco(enderecoModel);
+        }
 
         return ResponseEntity.ok(repository.save(cliente));
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         Cliente cliente = repository.findById(id)

@@ -9,7 +9,7 @@ import tfs.lexcontrol_api.enums.ModeloDePagamento;
 import tfs.lexcontrol_api.enums.StatusPagamento;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(name = "cliente")
 @Table(name = "clientes")
@@ -30,7 +30,7 @@ public class Cliente {
     @Column(name ="rg", nullable = false)
     private String rg;
     @Column(name = "data_de_vencimento", nullable = false)
-    private Date dataDeVencimento;
+    private LocalDate dataDeVencimento;
 
     private String causa;
 
@@ -46,5 +46,5 @@ public class Cliente {
     @Column(name= "totalHonorarios")
     private BigDecimal totalHonorarios;
     @Embedded
-    private Endereço endereco;
+    private Endereco endereco;
 }

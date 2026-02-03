@@ -5,4 +5,5 @@ import tfs.lexcontrol_api.models.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
+    boolean existsByCpf(String cpf);
 }

@@ -1,0 +1,7 @@
+ALTER TABLE clientes
+ADD COLUMN cpf VARCHAR(14) NOT NULL,
+ADD COLUMN rg VARCHAR(20) NOT NULL,
+ADD COLUMN data_de_vencimento DATE NOT NULL,
+ADD COLUMN modelo_de_pagamento VARCHAR(50),
+ADD COLUMN valor_parcela DECIMAL(10, 2),
+ADD COLUMN total_honorarios DECIMAL(10, 2);

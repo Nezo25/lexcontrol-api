@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Endereço {
+public class Endereco {
 
     @Column(name = "logradouro", length = 150)
     private String logradouro;
