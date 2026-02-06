@@ -10,6 +10,8 @@ import tfs.lexcontrol_api.enums.StatusPagamento;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "cliente")
 @Table(name = "clientes")
@@ -25,12 +27,13 @@ public class Cliente {
 
     @Column(name = "nome_cliente", nullable = false)
     private String nomeCliente;
-    @Column(name= "cpf", nullable = false)
+    @Column(unique = true, nullable = false)
     private String cpf;
-    @Column(name ="rg", nullable = false)
+    @Column(unique = true, nullable = false)
     private String rg;
     @Column(name = "data_de_vencimento", nullable = false)
     private LocalDate dataDeVencimento;
+    private String telefone;
 
     private String causa;
 
@@ -47,4 +50,11 @@ public class Cliente {
     private BigDecimal totalHonorarios;
     @Embedded
     private Endereco endereco;
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_advogado",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "advogado_id")
+    )
+    private List<Advogado> advogados = new ArrayList<>();
 }

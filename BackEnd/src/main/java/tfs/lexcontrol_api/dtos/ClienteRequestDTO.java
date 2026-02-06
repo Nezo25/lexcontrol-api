@@ -11,6 +11,7 @@ public record ClienteRequestDTO(
         @NotBlank String nomeCliente,
         @NotBlank String cpf,
         @NotBlank String rg,
+        @NotBlank String telefone,
         @NotNull LocalDate dataDeVencimento,
         @NotBlank String causa,
         StatusPagamento statusPagamento,
