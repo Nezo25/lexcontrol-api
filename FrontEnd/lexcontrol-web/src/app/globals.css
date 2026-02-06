@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@source "../modules";
+@source "../shared";
+
 
 body {
   @apply bg-slate-50 text-slate-900 antialiased;

@@ -1,5 +1,5 @@
 import { Wallet } from "lucide-react";
-import { Cliente } from "@/types/cliente";
+import { Cliente } from "../types/cliente";
 
 interface ClienteCardProps {
   cliente: Cliente;

@@ -1,4 +1,4 @@
-import { Endereco } from './endereco';
+import { Endereco } from '@/shared/types/endereco';
 
 export interface Cliente {
   id?: number;

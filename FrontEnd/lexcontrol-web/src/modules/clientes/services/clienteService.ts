@@ -1,5 +1,5 @@
-import { api } from "@/lib/api";
-import { Cliente } from "@/types/cliente";
+import { api } from "@/shared/services/api";
+import { Cliente } from "../types/cliente";
 
 export const clienteService = {
   criar: async (cliente: Cliente) => {
