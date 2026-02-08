@@ -1,20 +1,18 @@
 import { Endereco } from '@/shared/types/endereco';
 
+
 export interface Cliente {
   id?: number;
   nomeCliente: string;
   cpf: string;
   rg: string;
+  telefone: string;
+  dataDeVencimento: string;
   causa: string;
-
+  statusPagamento: 'PENDENTE' | 'PAGO' | 'ATRASADO' | 'A_TRASADO';
+  modeloDePagamento: 'A_VISTA' | 'PARCELADO';
   valorCausa: number;
-  statusPagamento: 'PENDENTE' | 'PAGO' | 'ATRASADO';
-
-  dataVencimento: string;
-
-  modeloDePagamento: 'AVISTA' | 'PARCELADO';
-  valorParcela?: number;
+  valorParcela: number;
   totalHonorarios: number;
-
   endereco?: Endereco;
 }
