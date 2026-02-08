@@ -28,7 +28,8 @@ export default function NovoClientePage() {
       router.push('/clientes');
     },
     onError: (error) => {
-      alert('Erro ao salvar. Verifique se o Back-end Java está rodando!');
+      // Agora com o telefone, esse erro deve sumir!
+      alert('Erro ao salvar. Verifique o console para detalhes.');
       console.error(error);
     },
   });
@@ -48,7 +49,6 @@ export default function NovoClientePage() {
       {/* Cabeçalho Flutuante */}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* CORREÇÃO DE ROTA NO LINK */}
           <Link href="/clientes" className="group p-3 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-all border border-slate-800 hover:border-slate-700">
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           </Link>
@@ -59,7 +59,7 @@ export default function NovoClientePage() {
         </div>
       </div>
 
-      {/* Card do Formulário (Glassmorphism) */}
+      {/* Card do Formulário */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-slate-900/60 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-slate-800 shadow-2xl space-y-10"
@@ -86,7 +86,8 @@ export default function NovoClientePage() {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* MUDANÇA AQUI: Grid de 3 colunas para incluir o Telefone */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className={labelStyle}>CPF</label>
                 <input
@@ -102,6 +103,21 @@ export default function NovoClientePage() {
                   className={inputStyle}
                   placeholder="00.000.000-0"
                 />
+              </div>
+              
+              {/* NOVO CAMPO: Telefone */}
+              <div>
+                <label className={labelStyle}>Telefone</label>
+                <input
+                  {...register('telefone', { required: 'Telefone é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="(11) 99999-9999"
+                />
+                {errors.telefone && (
+                    <span className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                      <AlertCircle size={12} /> {errors.telefone.message}
+                    </span>
+                  )}
               </div>
             </div>
           </div>
@@ -178,7 +194,7 @@ export default function NovoClientePage() {
               <label className={labelStyle}>Data de Vencimento</label>
               <input
                 type="date"
-                {...register('dataVencimento', { required: true })}
+                {...register('dataDeVencimento', { required: true })}
                 className={inputStyle}
               />
             </div>
@@ -188,7 +204,7 @@ export default function NovoClientePage() {
               <div className="relative">
                 <select {...register('modeloDePagamento', { required: true })} className={`${inputStyle} appearance-none`}>
                   <option value="" className="bg-slate-950">Selecione...</option>
-                  <option value="AVISTA" className="bg-slate-950">À vista</option>
+                  <option value="A_VISTA" className="bg-slate-950">À vista</option>
                   <option value="PARCELADO" className="bg-slate-950">Parcelado</option>
                 </select>
                 <div className="absolute right-4 top-4 pointer-events-none text-slate-500">▼</div>
