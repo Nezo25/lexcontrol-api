@@ -30,6 +30,7 @@ public class ClienteController {
         cliente.setCpf(dto.cpf());
         cliente.setRg(dto.rg());
         cliente.setDataDeVencimento(dto.dataDeVencimento());
+        cliente.setTelefone(dto.telefone());
 
         // 2. Mapeamento de campos da causa e honorários
         cliente.setCausa(dto.causa());
@@ -95,4 +96,5 @@ public class ClienteController {
         repository.delete(cliente);
         return ResponseEntity.ok("Cliente removido com sucesso!");
     }
+
 }
