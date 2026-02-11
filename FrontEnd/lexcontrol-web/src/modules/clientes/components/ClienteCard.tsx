@@ -55,7 +55,7 @@ export function ClienteCard({ cliente, onDoubleClick }: ClienteCardProps) {
         <div className="flex items-center gap-6 border-t md:border-t-0 border-slate-800/50 pt-4 md:pt-0 justify-between md:justify-end">
             <div className="text-right">
                 <p className="text-xs text-slate-500 mb-0.5 flex items-center justify-end gap-1">
-                   Valor da Causa <Wallet size={12} />
+                   Valor da Causa<Wallet size={12} />
                 </p>
                 <div className="font-mono font-medium text-slate-300">
                     {Number(cliente.valorCausa || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
