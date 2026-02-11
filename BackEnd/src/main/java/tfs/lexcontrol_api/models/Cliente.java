@@ -57,4 +57,7 @@ public class Cliente {
             inverseJoinColumns = @JoinColumn(name = "advogado_id")
     )
     private List<Advogado> advogados = new ArrayList<>();
+
+    @Column(name = "status")
+    private String status = "PENDENTE";
 }
