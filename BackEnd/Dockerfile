@@ -1,19 +1,18 @@
 # ESTÁGIO 1: Compilação
-FROM debian:bookworm-slim AS build
-RUN apt-get update && apt-get install -y openjdk-21-jdk maven curl
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Nota: Como o Java 25 é muito novo, compilamos com 21
-# mas garantimos que o ambiente do container seja limpo.
-COPY pom.xml .
-COPY src ./src
 
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
 RUN mvn clean package -DskipTests
 
 # ESTÁGIO 2: Execução
-FROM debian:bookworm-slim
-RUN apt-get update && apt-get install -y openjdk-21-jre
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Garante que a aplicação use o perfil correto e as variáveis do docker-compose
+ENTRYPOINT ["java", "-Dspring.profiles.active=default", "-jar", "app.jar"]
