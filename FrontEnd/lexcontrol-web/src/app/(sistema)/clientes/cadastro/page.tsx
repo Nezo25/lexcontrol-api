@@ -7,6 +7,7 @@ import { ArrowLeft, Save, Loader2, UserPlus, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { clienteService } from '@/modules/clientes/services/clienteService';
 import { Cliente } from '@/modules/clientes/types/cliente';
+import { Endereco } from '@/shared/types/endereco';
 
 export default function NovoClientePage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function NovoClientePage() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Cliente>();
+  } = useForm<Cliente & Endereco>();
 
   const modeloDePagamento = watch('modeloDePagamento');
 
@@ -125,10 +126,86 @@ export default function NovoClientePage() {
 
         <div className="h-px bg-slate-800/50" />
 
-        {/* Seção 2: Processo */}
+        {/* Seção 2: Endereço */}
         <div className="space-y-6">
           <h3 className={sectionTitleStyle}>
-            <span className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center text-sm font-bold">2</span>
+            <span className="w-8 h-8 rounded-lg bg-purple-500/10 text-yellow-500 flex items-center justify-center text-sm font-bold">2</span>
+            Endereço
+          </h3>
+            {/* NOVO CAMPO: Logradouro */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className={labelStyle}>Logradouro</label>
+                <input
+                  {...register('logradouro', { required: 'Logradouro é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="Ex: Rua das Flores"
+                />
+              </div>
+              {/* NOVO CAMPO: Número da casa */}
+              <div>
+                <label className={labelStyle}>Número</label>
+                <input
+                  {...register('numero', { required: 'Número é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="Ex: 123"
+                />
+              </div>
+              
+              {/* NOVO CAMPO: Bairro */}
+              <div>
+                <label className={labelStyle}>Bairro</label>
+                <input
+                  {...register('bairro', { required: 'Bairro é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="Ex: Centro"
+                />
+              </div>
+              {/* NOVO CAMPO: Complemento */}
+              <div>
+                <label className={labelStyle}>Complemento</label>
+                <input
+                  {...register('complemento', { required: false })}
+                  className={inputStyle}
+                  placeholder="Ex: Apt 123"
+                />
+              </div>
+              {/* NOVO CAMPO: Cidade */}
+              <div>
+                <label className={labelStyle}>Cidade</label>
+                <input
+                  {...register('cidade', { required: 'Cidade é obrigatória' })}
+                  className={inputStyle}
+                  placeholder="Ex: São Paulo"
+                />
+              </div>
+              {/* NOVO CAMPO: Estado */}
+              <div>
+                <label className={labelStyle}>Estado</label>
+                <input
+                  {...register('estado', { required: 'Estado é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="Ex: SP"
+                />
+              </div>
+              {/* NOVO CAMPO: CEP */}
+              <div>
+                <label className={labelStyle}>CEP</label>
+                <input
+                  {...register('cep', { required: 'CEP é obrigatório' })}
+                  className={inputStyle}
+                  placeholder="Ex: 12345-678"
+                />
+              </div>
+            </div>
+            </div>
+
+        <div className="h-px bg-slate-800/50" />
+
+        {/* Seção 3: Processo */}
+        <div className="space-y-6">
+          <h3 className={sectionTitleStyle}>
+            <span className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center text-sm font-bold">3</span>
             Detalhes do Processo
           </h3>
 
@@ -170,10 +247,10 @@ export default function NovoClientePage() {
 
         <div className="h-px bg-slate-800/50" />
 
-        {/* Seção 3: Financeiro */}
+        {/* Seção 4: Financeiro */}
         <div className="space-y-6">
           <h3 className={sectionTitleStyle}>
-            <span className="w-8 h-8 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center text-sm font-bold">3</span>
+            <span className="w-8 h-8 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center text-sm font-bold">4</span>
             Financeiro
           </h3>
 
