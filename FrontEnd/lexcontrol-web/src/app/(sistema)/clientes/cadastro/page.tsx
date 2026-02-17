@@ -7,7 +7,7 @@ import { ArrowLeft, Save, Loader2, UserPlus, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { clienteService } from '@/modules/clientes/services/clienteService';
 import { Cliente } from '@/modules/clientes/types/cliente';
-import { Endereco } from '@/shared/types/endereco';
+// import { Endereco } from '@/shared/types/endereco'; removido, isso dever ser definido na tipagem clienteee
 
 export default function NovoClientePage() {
   const router = useRouter();
@@ -18,7 +18,8 @@ export default function NovoClientePage() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Cliente & Endereco>();
+  } = useForm<Cliente>(); // APENAS CLIENTES, NAO PRECISA CHAMAR ENDERECO POIS CLIENTE JA HERDA ENDERECO
+
 
   const modeloDePagamento = watch('modeloDePagamento');
 
@@ -105,7 +106,7 @@ export default function NovoClientePage() {
                   placeholder="00.000.000-0"
                 />
               </div>
-              
+
               {/* NOVO CAMPO: Telefone */}
               <div>
                 <label className={labelStyle}>Telefone</label>
@@ -115,10 +116,10 @@ export default function NovoClientePage() {
                   placeholder="(11) 99999-9999"
                 />
                 {errors.telefone && (
-                    <span className="text-red-400 text-xs mt-2 flex items-center gap-1">
-                      <AlertCircle size={12} /> {errors.telefone.message}
-                    </span>
-                  )}
+                  <span className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                    <AlertCircle size={12} /> {errors.telefone.message}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -127,78 +128,85 @@ export default function NovoClientePage() {
         <div className="h-px bg-slate-800/50" />
 
         {/* Seção 2: Endereço */}
+        {/* Seção 2: Endereço */}
         <div className="space-y-6">
           <h3 className={sectionTitleStyle}>
             <span className="w-8 h-8 rounded-lg bg-purple-500/10 text-yellow-500 flex items-center justify-center text-sm font-bold">2</span>
             Endereço
           </h3>
-            {/* NOVO CAMPO: Logradouro */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className={labelStyle}>Logradouro</label>
-                <input
-                  {...register('logradouro', { required: 'Logradouro é obrigatório' })}
-                  className={inputStyle}
-                  placeholder="Ex: Rua das Flores"
-                />
-              </div>
-              {/* NOVO CAMPO: Número da casa */}
-              <div>
-                <label className={labelStyle}>Número</label>
-                <input
-                  {...register('numero', { required: 'Número é obrigatório' })}
-                  className={inputStyle}
-                  placeholder="Ex: 123"
-                />
-              </div>
-              
-              {/* NOVO CAMPO: Bairro */}
-              <div>
-                <label className={labelStyle}>Bairro</label>
-                <input
-                  {...register('bairro', { required: 'Bairro é obrigatório' })}
-                  className={inputStyle}
-                  placeholder="Ex: Centro"
-                />
-              </div>
-              {/* NOVO CAMPO: Complemento */}
-              <div>
-                <label className={labelStyle}>Complemento</label>
-                <input
-                  {...register('complemento', { required: false })}
-                  className={inputStyle}
-                  placeholder="Ex: Apt 123"
-                />
-              </div>
-              {/* NOVO CAMPO: Cidade */}
-              <div>
-                <label className={labelStyle}>Cidade</label>
-                <input
-                  {...register('cidade', { required: 'Cidade é obrigatória' })}
-                  className={inputStyle}
-                  placeholder="Ex: São Paulo"
-                />
-              </div>
-              {/* NOVO CAMPO: Estado */}
-              <div>
-                <label className={labelStyle}>Estado</label>
-                <input
-                  {...register('estado', { required: 'Estado é obrigatório' })}
-                  className={inputStyle}
-                  placeholder="Ex: SP"
-                />
-              </div>
-              {/* NOVO CAMPO: CEP */}
-              <div>
-                <label className={labelStyle}>CEP</label>
-                <input
-                  {...register('cep', { required: 'CEP é obrigatório' })}
-                  className={inputStyle}
-                  placeholder="Ex: 12345-678"
-                />
-              </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Logradouro */}
+            <div>
+              <label className={labelStyle}>Logradouro</label>
+              <input
+                {...register('endereco.logradouro', { required: 'Logradouro é obrigatório' })}
+                className={inputStyle}
+                placeholder="Ex: Rua das Flores"
+              />
             </div>
+
+            {/* Número */}
+            <div>
+              <label className={labelStyle}>Número</label>
+              <input
+                {...register('endereco.numero', { required: 'Número é obrigatório' })}
+                className={inputStyle}
+                placeholder="Ex: 123"
+              />
             </div>
+
+            {/* Bairro */}
+            <div>
+              <label className={labelStyle}>Bairro</label>
+              <input
+                {...register('endereco.bairro', { required: 'Bairro é obrigatório' })}
+                className={inputStyle}
+                placeholder="Ex: Centro"
+              />
+            </div>
+
+            {/* Complemento */}
+            <div>
+              <label className={labelStyle}>Complemento</label>
+              <input
+                {...register('endereco.complemento')}
+                className={inputStyle}
+                placeholder="Ex: Apt 123"
+              />
+            </div>
+
+            {/* Cidade */}
+            <div>
+              <label className={labelStyle}>Cidade</label>
+              <input
+                {...register('endereco.cidade', { required: 'Cidade é obrigatória' })}
+                className={inputStyle}
+                placeholder="Ex: São Paulo"
+              />
+            </div>
+
+            {/* Estado */}
+            <div>
+              <label className={labelStyle}>Estado</label>
+              <input
+                {...register('endereco.estado', { required: 'Estado é obrigatório' })}
+                className={inputStyle}
+                placeholder="Ex: SP"
+              />
+            </div>
+
+            {/* CEP */}
+            <div>
+              <label className={labelStyle}>CEP</label>
+              <input
+                {...register('endereco.cep', { required: 'CEP é obrigatório' })}
+                className={inputStyle}
+                placeholder="Ex: 12345-678"
+              />
+            </div>
+          </div>
+        </div>
 
         <div className="h-px bg-slate-800/50" />
 
