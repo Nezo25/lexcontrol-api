@@ -1,105 +1,56 @@
 # ⚖️ LexControl Ecosystem
 
-> Sistema de alta performance para gestão jurídica e controle financeiro.
+> **Engenharia de Software de Alta Performance para Gestão Jurídica**
 
-O **LexControl** é uma plataforma robusta desenvolvida para eliminar gargalos operacionais em escritórios de advocacia. O ecossistema integra um backend resiliente em Java com um frontend moderno e responsivo em Next.js, utilizando as tecnologias mais recentes do mercado para garantir escalabilidade e segurança.
+O **LexControl** é um ecossistema completo para escritórios de advocacia que buscam automação financeira e controle processual. Sincronia absoluta entre **Java 25** e **Next.js 15**.
 
 ---
 
-### 📸 Preview do Sistema
+## 💻 Experiência Desktop (Gestão e Autenticação)
 
-#### 💻 Desktop Experience
+### 1. Fluxo de Login
+*(Veja o vídeo abaixo renderizado pelo GitHub)*
 
-A interface desktop foi projetada para alta densidade de informação e produtividade constante.
+![Fluxo de Login Desktop](docs/gifs/gif_final.mp4)
 
-| Fluxo de Autenticação | Dashboard Principal | Lista de Clientes |
-| --- | --- | --- |
-|  |  |  |
-
-#### 📱 Mobile-First Design
-
-O sistema garante que o advogado tenha acesso aos dados em tempo real, com uma interface otimizada para dispositivos móveis.
+### 2. Dashboard Principal e Gestão de Clientes
 
 <div align="center">
-<video src="docs/gifs/mobile-ficha-cliente.webm" width="32%" autoplay loop muted></video>
-<img src="docs/screenshots/mobile-home.png" width="32%" alt="Home Mobile">
-<img src="docs/screenshots/mobile-menu.png" width="32%" alt="Menu Mobile">
+  <img src="docs/screenshots/HomeDesktop.png" width="49%" alt="Dashboard Desktop">
+  <img src="docs/screenshots/ClienteDesk.png" width="49%" alt="Lista de Clientes Desktop">
 </div>
 
 ---
 
-### 🚀 Stack Tecnológica
+## 📱 Mobile-First Design (Operação em Campo)
 
-#### **Backend (LexControl API)**
+### 1. Welcome Robot 🤖 (Assistente de Boas-Vindas)
 
-* **Core:** Java 25 & Spring Boot 4.0.
-* **Persistência:** MySQL 8.0 com controle de versionamento via **Flyway Migrations**.
-* **Segurança:** Spring Security (Preparado para implementação de JWT).
-* **Arquitetura:** Padrão RESTful com isolamento rigoroso via DTOs e Services.
+![Welcome Robot](docs/gifs/projeto_celular.mp4)
 
-#### **Frontend (LexControl Web)**
+### 2. Ficha Completa do Cliente
 
-* **Framework:** Next.js 15 (App Router) & React 19.
-* **Estilização:** Tailwind CSS com metodologia de design atômico.
-* **Gerenciamento de Estado:** TanStack Query (React Query) & Context API.
-* **Ícones:** Lucide React.
+![Ficha do Cliente](docs/gifs/FichaDoClienteMobile.webm)
+
+### 3. Visão Geral Mobile (Home, Menu e Lista)
+
+<div align="center">
+  <img src="docs/screenshots/HomeMobile.png" width="32%" alt="Home Mobile"> 
+  <img src="docs/screenshots/MenuLateralMobile.png" width="32%" alt="Menu Lateral Mobile"> 
+  <img src="docs/screenshots/ClienteMobile.png" width="32%" alt="Lista de Clientes Mobile">
+</div>
 
 ---
 
-### ⚙️ Configuração de Ambiente (DevOps)
+## 🪄 Automação DevOps (Script Python)
 
-O projeto utiliza o recurso de **Git Worktrees**, permitindo o desenvolvimento simultâneo em múltiplas branches (`master`, `BackEnd`, `FrontEnd`) em pastas separadas, sem a necessidade de múltiplos clones.
+Criamos um **Script em Python** que prepara todo o ambiente do LexControl automaticamente usando a arquitetura de `Git Worktrees`.
 
-#### **1. Setup Automático**
+Ele clona a raiz (`main`) e cria instâncias físicas separadas para o `front` e o `back`, permitindo trabalhar simultaneamente sem conflito de branches.
 
-Certifique-se de ter o Python instalado e execute o script de automação na raiz do seu diretório de trabalho:
-
+**Como invocar o ambiente:**
+1. Tenha o Python instalado.
+2. Coloque o arquivo `setup_lexcontrol.py` na sua pasta de projetos.
+3. No terminal, execute:
 ```bash
 python setup_lexcontrol.py
-
-```
-
-*Este script instanciará as pastas `lexcontrol-main`, `lexcontrol-back` e `lexcontrol-front` sincronizadas entre si.*
-
-#### **2. Execução dos Módulos**
-
-* **Frontend:**
-```bash
-cd lexcontrol-front
-npm install
-npm run dev
-
-```
-
-
-* **Backend:**
-* Importe a pasta `lexcontrol-back` no IntelliJ IDEA.
-* Certifique-se de que o **JDK 25** está configurado.
-* Execute a aplicação via Spring Boot Dashboard. A API estará disponível em `localhost:8080`.
-
-
-
----
-
-### 🏗️ Arquitetura e Engenharia de Software
-
-O desenvolvimento segue princípios rigorosos de **POO** e **Clean Code**:
-
-* **Arquitetura Modular:** Localizada em `src/modules/`, separando as lógicas de negócio por domínio (ex: Clientes, Notas, Financeiro).
-* **Single Source of Truth:** Tipagens globais em `src/shared/types/` para garantir consistência em todo o ecossistema.
-* **Blindagem de Dados:** Camada de serviço no frontend responsável por tratar valores nulos, erros de API e garantir a integridade dos dados antes da renderização.
-* **Componentes Reutilizáveis:** Átomos de interface localizados em `src/shared/components/` para garantir uniformidade visual e facilidade de manutenção.
-
----
-
-### 👨‍💻 Governança de Código
-
-Para manter a integridade do ambiente de produção:
-
-1. **Feature Branches:** Todo desenvolvimento deve ocorrer em branches temporárias.
-2. **Code Review:** Commits diretos na branch `master` são estritamente proibidos.
-3. **Padronização de Imagens:** Novos screenshots devem seguir o padrão `plataforma-funcionalidade.png` e serem armazenados em `docs/screenshots/`.
-
----
-
-**LexControl** - *Transformando a gestão jurídica através da tecnologia.*
