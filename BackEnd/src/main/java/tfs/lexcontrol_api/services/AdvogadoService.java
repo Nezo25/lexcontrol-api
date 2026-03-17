@@ -12,7 +12,7 @@ import tfs.lexcontrol_api.repositories.EscritorioRepository;
 import java.util.List;
 
 @Service
-public class AdvogadoService {
+public class    AdvogadoService {
     @Autowired
     private AdvogadoRepository repository;
     @Autowired
