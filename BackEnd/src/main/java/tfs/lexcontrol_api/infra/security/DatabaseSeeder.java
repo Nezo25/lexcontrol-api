@@ -24,7 +24,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             admin.setEmail("admin@lexcontrol.com.br");
 
             // Aqui o Java usa o seu BCrypt(12) para gerar o hash seguro
-            admin.setSenha(passwordEncoder.encode("Admin@1234"));
+            admin.setSenha(passwordEncoder.encode("admin123"));
 
             // Certifique-se de que o seu model Usuario tenha esse campo
             admin.setRole(UsuarioRole.ADMIN);
@@ -34,7 +34,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             System.out.println("-----------------------------------------");
             System.out.println("Usuário Admin criado com sucesso!");
             System.out.println("E-mail: admin@lexcontrol.com.br");
-            System.out.println("Senha: Admin@1234");
+            System.out.println("Senha: admin123");
             System.out.println("-----------------------------------------");
         }
     }

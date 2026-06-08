@@ -4,7 +4,7 @@ services:
     container_name: lexcontrol-db
     environment:
       MYSQL_DATABASE: lexcontrol_db
-      MYSQL_ROOT_PASSWORD: En648213!
+      MYSQL_ROOT_PASSWORD: senha123
     ports:
       - "3310:3306"
 
@@ -20,4 +20,4 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/lexcontrol_db?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: En648213!
+      SPRING_DATASOURCE_PASSWORD: senha123
