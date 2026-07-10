@@ -1,0 +1,13 @@
+{
+  "nomeCliente": "Joao",
+  "cpf": "123",
+  "rg": "123",
+  "telefone": "123",
+  "dataDeVencimento": "2026-09-20",
+  "causa": "TRABALHISTA",
+  "statusPagamento": "PENDENTE",
+  "modeloDePagamento": "A_VISTA",
+  "valorCausa": 40000,
+  "valorParcela": 0,
+  "totalHonorarios": 500
+}

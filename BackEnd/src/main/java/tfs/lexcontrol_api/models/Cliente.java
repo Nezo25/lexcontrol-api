@@ -5,11 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import tfs.lexcontrol_api.enums.ModeloDePagamento;
-import tfs.lexcontrol_api.enums.StatusPagamento;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,25 +26,15 @@ public class Cliente {
     private String cpf;
     @Column(unique = true, nullable = false)
     private String rg;
-    @Column(name = "data_de_vencimento", nullable = false)
-    private LocalDate dataDeVencimento;
     private String telefone;
 
-    private String causa;
+    @Column(name = "asaas_customer_id", length = 50)
+    private String asaasCustomerId;
 
-    @Enumerated(EnumType.STRING)
-    private StatusPagamento statusPagamento;
-
-    @Column(name = "valor_causa", precision = 10, scale = 2)
-    private BigDecimal valorCausa;
-    @Enumerated(EnumType.STRING)
-    private ModeloDePagamento modeloDePagamento;
-    @Column(name = "valorParcela")
-    private BigDecimal valorParcela;
-    @Column(name= "totalHonorarios")
-    private BigDecimal totalHonorarios;
     @Embedded
     private Endereco endereco;
+    
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "cliente_advogado",
@@ -57,7 +42,4 @@ public class Cliente {
             inverseJoinColumns = @JoinColumn(name = "advogado_id")
     )
     private List<Advogado> advogados = new ArrayList<>();
-
-    @Column(name = "status")
-    private String status = "PENDENTE";
 }

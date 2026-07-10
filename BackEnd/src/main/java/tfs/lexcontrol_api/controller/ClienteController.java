@@ -1,5 +1,6 @@
 package tfs.lexcontrol_api.controller;
 
+import tfs.lexcontrol_api.dtos.StandardResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +23,14 @@ public class ClienteController {
     private ClienteRepository repository;
 
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody @Valid ClienteRequestDTO dto) {
+    public ResponseEntity<StandardResponseDTO<Cliente>> create(@RequestBody @Valid ClienteRequestDTO dto) {
         var cliente = new Cliente();
 
         // 1. Mapeamento de campos obrigatórios (Evita o erro de CPF null)
         cliente.setNomeCliente(dto.nomeCliente());
         cliente.setCpf(dto.cpf());
         cliente.setRg(dto.rg());
-        cliente.setDataDeVencimento(dto.dataDeVencimento());
         cliente.setTelefone(dto.telefone());
-
-        // 2. Mapeamento de campos da causa e honorários
-        cliente.setCausa(dto.causa());
-        cliente.setStatusPagamento(dto.statusPagamento());
-        cliente.setModeloDePagamento(dto.modeloDePagamento());
-
-        // Conversões seguras de tipos numéricos
-        cliente.setValorCausa(BigDecimal.valueOf(dto.valorCausa()));
-        cliente.setValorParcela(BigDecimal.valueOf(dto.valorParcela()));
-        cliente.setTotalHonorarios(BigDecimal.valueOf(dto.totalHonorarios()));
 
         // 3. Mapeamento do Endereço (@Embedded)
         if (dto.endereco() != null) {
@@ -50,7 +40,18 @@ public class ClienteController {
             cliente.setEndereco(enderecoModel);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(cliente));
+        Cliente clienteCriado = repository.save(cliente);
+
+        String logNarrativo = String.format("Cliente [%s] (CPF: %s) cadastrado na base de dados com sucesso.", 
+                clienteCriado.getNomeCliente(), clienteCriado.getCpf());
+                
+        StandardResponseDTO<Cliente> response = StandardResponseDTO.success(
+                "Cliente cadastrado com sucesso!", 
+                logNarrativo, 
+                clienteCriado
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -74,10 +75,6 @@ public class ClienteController {
         cliente.setNomeCliente(dto.nomeCliente());
         cliente.setCpf(dto.cpf());
         cliente.setRg(dto.rg());
-        cliente.setDataDeVencimento(dto.dataDeVencimento());
-        cliente.setCausa(dto.causa());
-        cliente.setStatusPagamento(dto.statusPagamento());
-        cliente.setValorCausa(BigDecimal.valueOf(dto.valorCausa()));
 
         if (dto.endereco() != null) {
             var enderecoModel = new Endereco();

@@ -17,11 +17,41 @@ public class RestExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntime(RuntimeException ex) {
         ErrorResponse error = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Erro interno no servidor: " + ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(tfs.lexcontrol_api.infra.exceptions.RegraNegocioException.class)
+    public ResponseEntity<ErrorResponse> handleRegraNegocio(tfs.lexcontrol_api.infra.exceptions.RegraNegocioException ex) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(tfs.lexcontrol_api.infra.exceptions.RecursoNaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handleNaoEncontrado(tfs.lexcontrol_api.infra.exceptions.RecursoNaoEncontradoException ex) {
+        ErrorResponse error = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
                 System.currentTimeMillis()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InconsistenciaFinanceiraException.class)
+    public ResponseEntity<ErrorResponse> handleInconsistencia(InconsistenciaFinanceiraException ex) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

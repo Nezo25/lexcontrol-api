@@ -12,7 +12,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     boolean existsByCpf(String cpf);
 
-    List<Cliente> findByDataDeVencimentoBefore(LocalDate hoje);
-
-    List<Cliente> findAllByDataDeVencimentoBeforeAndStatusNot(LocalDate hoje, String atrasado);
 }

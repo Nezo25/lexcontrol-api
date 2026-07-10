@@ -4,43 +4,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import tfs.lexcontrol_api.models.Cliente;
+import tfs.lexcontrol_api.enums.StatusFatura;
+import tfs.lexcontrol_api.models.Fatura;
 import tfs.lexcontrol_api.models.Notificacao;
-import tfs.lexcontrol_api.repositories.ClienteRepository;
+import tfs.lexcontrol_api.repositories.FaturaRepository;
 import tfs.lexcontrol_api.repositories.NotificacaoRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Component // Esta anotação diz ao Spring: "Crie este robô ao iniciar"
+@Component
 public class AgendadorDeCobranca {
 
     @Autowired
-    private ClienteRepository repository;
+    private FaturaRepository faturaRepository;
 
     @Autowired
     private NotificacaoRepository notificacaoRepository;
 
-    @Scheduled(cron = "0/30 * * * * *") // A cada 30 segundos
+    @Scheduled(cron = "0/30 * * * * *") // A cada 30 segundos (em prod, mude para rodar 1x por dia)
     @Transactional
     public void rotinaAutomatica() {
         LocalDate hoje = LocalDate.now();
 
+        // Busca faturas PENDENTES que a data de vencimento seja anterior a hoje
+        List<Fatura> faturasVencidas = faturaRepository.findAllByDataVencimentoBeforeAndStatus(hoje, StatusFatura.PENDENTE);
 
-        List<Cliente> vencidos = repository.findAllByDataDeVencimentoBeforeAndStatusNot(hoje, "ATRASADO");
-
-        for (Cliente c : vencidos) {
-            c.setStatus("ATRASADO");
-            repository.saveAndFlush(c); // <--- Use o Flush aqui!
+        for (Fatura fatura : faturasVencidas) {
+            fatura.setStatus(StatusFatura.ATRASADA);
+            faturaRepository.saveAndFlush(fatura);
 
             Notificacao n = new Notificacao();
-            n.setMensagem("Alerta: O boleto de " + c.getNomeCliente() + " venceu!");
+            String nomeCliente = fatura.getContrato().getCliente().getNomeCliente();
+            n.setMensagem("Alerta: A parcela " + fatura.getNumeroParcela() + " do cliente " + nomeCliente + " venceu!");
             n.setDataNotificacao(LocalDateTime.now());
-            n.setClienteId(c.getId());
+            n.setClienteId(fatura.getContrato().getCliente().getId());
             notificacaoRepository.save(n);
 
-            System.out.println("Status persistido para: " + c.getNomeCliente());
+            System.out.println("Fatura atrasada registrada para: " + nomeCliente);
         }
     }
 }
