@@ -29,15 +29,18 @@ public class AsaasIntegrationService {
     private final RestClient restClient;
     private final FaturaRepository faturaRepository;
     private final ObjectMapper objectMapper;
+    private final RateioService rateioService;
 
     public AsaasIntegrationService(
             @Value("${asaas.api.url}") String apiUrl,
             @Value("${asaas.api.key}") String apiKey,
             FaturaRepository faturaRepository,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            RateioService rateioService) {
         
         this.faturaRepository = faturaRepository;
         this.objectMapper = objectMapper;
+        this.rateioService = rateioService;
         JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory();
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
@@ -74,7 +77,7 @@ public class AsaasIntegrationService {
         throw new tfs.lexcontrol_api.infra.exceptions.RegraNegocioException("Falha ao criar cliente no Asaas");
     }
 
-    @Async
+    @Async("asaasTaskExecutor")
     public void emitirCobranca(Fatura fatura, Cliente cliente) {
         log.info("[THREAD-SECUNDÁRIA] Emitindo cobrança da Fatura ID: {} no Asaas...", fatura.getId());
 
@@ -142,6 +145,8 @@ public class AsaasIntegrationService {
                             fatura.setStatus(StatusFatura.PAGA);
                             changed = true;
                             log.info("Fatura ID {} atualizada para PAGA pelo Webhook.", faturaId);
+                            // INTEGRATION POINT: Rateio/Split
+                            rateioService.processarRateioDaFatura(fatura);
                         } else if ("PAYMENT_OVERDUE".equals(event)) {
                             fatura.setStatus(StatusFatura.ATRASADA);
                             changed = true;

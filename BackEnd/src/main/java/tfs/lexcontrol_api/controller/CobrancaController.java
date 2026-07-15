@@ -30,22 +30,41 @@ public class CobrancaController {
         
         ContratoHonorario gerado = cobrancaService.emitirContratoComCobrancas(contrato);
         
-        String destinatario = (gerado.getTipoHonorario() == tfs.lexcontrol_api.enums.TipoHonorario.SUCUMBENCIA)
+        String destinatario = (gerado.getTipoHonorario() == tfs.lexcontrol_api.enums.TipoHonorario.SUCUMBENCIA || gerado.getTipoHonorario() == tfs.lexcontrol_api.enums.TipoHonorario.EXITO)
                 ? gerado.getNomePagadorSucumbencia()
                 : cliente.getNomeCliente();
 
-        String logNarrativo = String.format("Motor de faturamento gerou um contrato tipo [%s] de R$ %,.2f particionado em %d fatura(s). Destinatário: %s.", 
+        String logNarrativo = String.format("Motor de faturamento processou um contrato tipo [%s] de R$ %,.2f. Destinatário: %s.", 
                 gerado.getTipoHonorario(), 
                 gerado.getValorTotal(), 
-                gerado.getFaturas().size(),
                 destinatario);
                 
         StandardResponseDTO<ContratoHonorario> response = StandardResponseDTO.success(
-                "Cobrança emitida com sucesso!", 
+                "Operação realizada com sucesso!", 
                 logNarrativo, 
                 gerado
         );
         
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/contratos/{contratoId}/vencer-causa")
+    public ResponseEntity<StandardResponseDTO<ContratoHonorario>> vencerCausa(
+            @PathVariable Long contratoId,
+            @RequestBody tfs.lexcontrol_api.dtos.VencerCausaDTO dto) {
+            
+        ContratoHonorario executado = cobrancaService.executarCobrancaSucumbencia(contratoId, dto);
+        
+        String logNarrativo = String.format("Aviso de ganho de causa recebido! Contrato ativado no valor de R$ %,.2f. Faturas geradas para o perdedor: %s.", 
+                executado.getValorTotal(), 
+                executado.getNomePagadorSucumbencia());
+                
+        StandardResponseDTO<ContratoHonorario> response = StandardResponseDTO.success(
+                "Ganho de causa registrado e cobranças emitidas!", 
+                logNarrativo, 
+                executado
+        );
+        
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

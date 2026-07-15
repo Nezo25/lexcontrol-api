@@ -66,6 +66,10 @@ public class ContratoHonorario {
     private TipoHonorario tipoHonorario;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 50)
+    private tfs.lexcontrol_api.enums.StatusContrato status = tfs.lexcontrol_api.enums.StatusContrato.ATIVO;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "frequencia", length = 50)
     private FrequenciaCobranca frequencia;
 

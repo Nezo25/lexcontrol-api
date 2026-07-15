@@ -23,13 +23,16 @@ public class AsaasIntegrationServiceTest {
     @Mock
     private FaturaRepository faturaRepository;
 
+    @Mock
+    private RateioService rateioService;
+
     private ObjectMapper objectMapper = new ObjectMapper(); // Não mockamos o parser de JSON
 
     private AsaasIntegrationService asaasIntegrationService;
 
     @BeforeEach
     void setUp() {
-        asaasIntegrationService = new AsaasIntegrationService("http://fake-api", "fake-key", faturaRepository, objectMapper);
+        asaasIntegrationService = new AsaasIntegrationService("http://fake-api", "fake-key", faturaRepository, objectMapper, rateioService);
     }
 
     @Test

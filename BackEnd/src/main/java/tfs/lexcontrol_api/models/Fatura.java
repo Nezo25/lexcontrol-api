@@ -53,8 +53,16 @@ public class Fatura {
     @Column(name = "criado_em", updatable = false)
     private LocalDateTime criadoEm;
 
+    @Column(name = "atualizado_em")
+    private LocalDateTime atualizadoEm;
+
     @PrePersist
     protected void onCreate() {
         this.criadoEm = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.atualizadoEm = LocalDateTime.now();
     }
 }

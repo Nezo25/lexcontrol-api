@@ -1,0 +1,1 @@
+ALTER TABLE tb_contrato_honorario ADD COLUMN status VARCHAR(50) NOT NULL DEFAULT 'ATIVO';
